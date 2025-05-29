@@ -1,11 +1,14 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
+import { VoucherService } from './voucher.service';
 
 @Controller('voucher')
 export class VoucherController {
+  constructor(private readonly voucherService: VoucherService) {}
+
   @Get()
-  findAll(): string {
+  findAll(): any {
     try {
-      return 'All vouchers';
+      return this.voucherService.findAll();
     } catch (error) {
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
@@ -18,7 +21,7 @@ export class VoucherController {
 
   @Get(':id')
   findOne(@Param('id') id: string): string {
-    return 'Voucher id: ' + id;
+    return this.voucherService.findOne(id);
   }
 
   @Post()
@@ -27,12 +30,12 @@ export class VoucherController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateVoucher: string): string {
-    return 'Voucher Updated';
+  update(@Param('id') id: string, @Body() updateVoucher: { code?: string }): string {
+    return this.voucherService.update(id, updateVoucher);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string): string {
-    return 'Voucher Removed';
+    return this.voucherService.delete(id);
   }
 }
