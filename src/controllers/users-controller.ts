@@ -1,25 +1,31 @@
 import { Request, Response } from "express";
+import { UserService } from '../services/users-services'
 
-class UsersController {
-  async getAll(req: Request, res: Response) {
-    res.json(['Hello World!']);
+const userService = new UserService();
+
+export class UserController {
+  static async findAll(req: Request, res: Response) {
+    const users = await userService.findAll();
+    res.json(users);
   }
 
-  async findOne(req: Request, res: Response) {
-    res.json([]);
+  static async findOne(req: Request, res: Response) {
+    const user = await userService.findOne(req.params.id);
+    res.json(user);
   }
 
-  async create(req: Request, res: Response) {
-    res.json([]);
+  static async create(req: Request, res: Response) {
+    const user = await userService.create(req.body);
+    res.status(201).json(user);
   }
 
-  async update(req: Request, res: Response) {
-    res.json([]);
+  static async update(req: Request, res: Response) {
+    const user = await userService.update(req.params.id, req.body);
+    res.json(user);
   }
 
-  async remove(req: Request, res: Response) {
-    res.json([]);
+  static async remove(req: Request, res: Response) {
+    await userService.remove(req.params.id);
+    res.status(204).send();
   }
 }
-
-export default new UsersController();

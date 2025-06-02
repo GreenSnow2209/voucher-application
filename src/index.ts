@@ -12,7 +12,7 @@ app.get('/', (req: Request, res: Response) => {
 
 const start = async () => {
   try {
-    await mongoose.connect("");
+    await mongoose.connect("mongodb+srv://ttson35997:n0aBka294WXh7Cw0@voucher-application.0r89wm0.mongodb.net/voucher-app");
     console.log("Connected to mongodb successfully!");
   } catch (error) {
     console.error(error);
@@ -21,6 +21,7 @@ const start = async () => {
 };
 
 start().then(() => {
+  app.use(express.json());
   app.use('/api', routes);
   app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
