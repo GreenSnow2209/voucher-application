@@ -1,5 +1,8 @@
 import express, { Request, Response } from 'express';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './swagger';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import routes from './routes';
 
 const app = express();
@@ -22,6 +25,8 @@ const start = async () => {
 
 start().then(() => {
   app.use(express.json());
+  app.use(cors());
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   app.use('/api', routes);
   app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
