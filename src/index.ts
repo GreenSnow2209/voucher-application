@@ -10,10 +10,6 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
-})
-
 const start = async () => {
   try {
     const mongoUri = process.env.MONGO_URI || "";
