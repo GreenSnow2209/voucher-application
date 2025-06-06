@@ -4,9 +4,10 @@ import { swaggerSpec } from './swagger';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import routes from './routes';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const app = express();
-
 const port = process.env.PORT || 3000;
 
 app.get('/', (req: Request, res: Response) => {
@@ -15,7 +16,8 @@ app.get('/', (req: Request, res: Response) => {
 
 const start = async () => {
   try {
-    await mongoose.connect("mongodb+srv://ttson35997:n0aBka294WXh7Cw0@voucher-application.0r89wm0.mongodb.net/voucher-app");
+    const mongoUri = process.env.MONGO_URI || "";
+    await mongoose.connect(mongoUri);
     console.log("Connected to mongodb successfully!");
   } catch (error) {
     console.error(error);

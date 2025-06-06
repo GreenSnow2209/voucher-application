@@ -3,7 +3,7 @@ import { UserModel } from "../models/users";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'ryoji';
+const JWT_SECRET = process.env.JWT_SECRET || '123';
 
 export class AuthController {
     static async login(req: Request, res: Response) {
