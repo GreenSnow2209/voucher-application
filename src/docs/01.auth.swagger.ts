@@ -1,7 +1,9 @@
-import express from "express";
-import {AuthController} from "../controllers/auth-controller";
-
-const router = express.Router();
+/**
+ * @swagger
+ * tags:
+ *   name: Authentication
+ *   description: User login and token issuing
+ */
 
 /**
  * @swagger
@@ -40,6 +42,3 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.post('/', AuthController.login);
-
-export default router;

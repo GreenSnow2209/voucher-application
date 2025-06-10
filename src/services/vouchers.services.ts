@@ -1,4 +1,4 @@
-import { VoucherModel } from "../models/vouchers";
+import { VoucherModel } from "../models/vouchers.model";
 
 export class VoucherService {
     async findAll() {

@@ -8,8 +8,22 @@ export const swaggerOptions: swaggerJSDoc.Options = {
             version: '1.0.0',
             description: 'API documentation for the Voucher application',
         },
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+            },
+        },
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
     },
-    apis: ['./src/routes/*.ts'],
+    apis: ['./src/docs/*.ts'],
 };
 
 export const swaggerSpec = swaggerJSDoc(swaggerOptions);

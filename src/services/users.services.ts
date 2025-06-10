@@ -1,4 +1,4 @@
-import { UserModel } from '../models/users'
+import { UserModel } from '../models/users.model'
 
 export class UserService {
     async findAll() {

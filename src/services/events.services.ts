@@ -1,5 +1,5 @@
-import {EventModel} from "../models/events";
-import {VoucherModel} from "../models/vouchers";
+import {EventModel} from "../models/events.model";
+import {VoucherModel} from "../models/vouchers.model";
 import {v4 as uuidv4} from "uuid";
 
 export class EventService {

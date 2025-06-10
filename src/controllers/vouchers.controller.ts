@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { VoucherService } from '../services/vouchers-services'
+import { VoucherService } from '../services/vouchers.services'
 
 const voucherService = new VoucherService();
 
