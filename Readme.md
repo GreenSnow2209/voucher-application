@@ -33,12 +33,17 @@ Install Mongoose in Project
 Install ESLint 
 
 ```bash 
-npm install eslint
+npm install --save-dev eslint @eslint/js typescript typescript-eslint
 ```
 
 ```bash
 npx eslint --init
 ```
+
+```bash
+npx eslint .
+```
+
 
 
 ---

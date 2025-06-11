@@ -1,23 +1,13 @@
-import { VoucherModel } from "../models/vouchers.model";
+import {IVoucherDocument} from "../models/voucher.model";
+import BaseService from "./base.service";
+import {VoucherRepository} from "../repositories/voucher.repository";
 
-export class VoucherService {
-    async findAll() {
-        return await VoucherModel.find();
-    }
+export class VoucherService extends BaseService<IVoucherDocument> {
+    private voucherRepository: VoucherRepository;
 
-    async findOne(id: string) {
-        return await VoucherModel.findById(id);
-    }
-
-    async create(data: any) {
-        return await VoucherModel.create(data);
-    }
-
-    async update(id: string, data: any) {
-        return await VoucherModel.findByIdAndUpdate(id, data, { new: true });
-    }
-
-    async remove(id: string) {
-        return await VoucherModel.findByIdAndDelete(id);
+    constructor() {
+        const voucherRepo = new VoucherRepository();
+        super(voucherRepo);
+        this.voucherRepository = voucherRepo;
     }
 }

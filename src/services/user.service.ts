@@ -1,23 +1,48 @@
-import { UserModel } from '../models/users.model'
+import {IUserDocument} from '../models/user.model'
+import BaseService from "./base.service";
+import {UserRepository} from "../repositories/user.repository";
+import bcrypt from "bcrypt";
+import {v4 as uuidv4} from "uuid";
 
-export class UserService {
-    async findAll() {
-        return await UserModel.find();
+export class UserService extends BaseService<IUserDocument> {
+    protected userRepository: UserRepository;
+
+    constructor() {
+        const userRepo = new UserRepository();
+        super(userRepo);
+        this.userRepository = userRepo;
     }
 
-    async findOne(id: string) {
-        return await UserModel.findById(id);
+    async validateLogin(email: string, password: string): Promise<IUserDocument | null> {
+        if (!email || !password) {
+            return null;
+        }
+        const user = await this.userRepository.findByEmail(email);
+        if (!user) {
+            return null;
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return null;
+        }
+        return user;
     }
 
-    async create(data: any) {
-        return await UserModel.create(data);
-    }
-
-    async update(id: string, data: any) {
-        return await UserModel.findByIdAndUpdate(id, data, { new: true });
-    }
-
-    async remove(id: string) {
-        return await UserModel.findByIdAndDelete(id);
+    async register(email: string, password: string, name: string): Promise<IUserDocument | null> {
+        if (!email || !password || !name) {
+            return null;
+        }
+        const userExists = await this.userRepository.findByEmail(email);
+        if (userExists) {
+            return null;
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const userData = {
+            id: uuidv4().toUpperCase(),
+            email,
+            password: hashedPassword,
+            name,
+        }
+        return await this.create(userData);
     }
 }

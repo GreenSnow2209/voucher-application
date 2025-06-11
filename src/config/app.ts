@@ -1,10 +1,10 @@
-import express from "express";
+import express, { Express } from 'express';
 import cors from "cors";
 import routes from "../routes";
 import swaggerUi from "swagger-ui-express";
 import {swaggerSpec} from "../docs/swagger";
 
-export const createApp = () => {
+export const createApp = (): Express => {
     const app = express();
     app.use(express.json());
     app.use(cors());

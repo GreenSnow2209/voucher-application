@@ -1,6 +1,7 @@
 import {Document} from "mongoose";
 
 export interface IVoucher extends Document {
+    id: string;
     code: string;
     userId: string;
     eventId: string;

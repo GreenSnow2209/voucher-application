@@ -1,6 +1,7 @@
 import {Model, Document} from "mongoose";
+import {ICrudRepository} from "./interfaces/crud-repository.interface";
 
-export default class BaseRepository<T extends Document> {
+export default class BaseRepository<T extends Document> implements ICrudRepository<T> {
     protected model: Model<T>;
 
     constructor(model: Model<T>) {
