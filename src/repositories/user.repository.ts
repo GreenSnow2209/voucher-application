@@ -1,17 +1,12 @@
-import {Document} from "mongoose";
 import BaseRepository from "./base.repository";
-import {UserModel} from "../models/users.model";
+import {IUserDocument, UserModel} from "../models/user.model";
 
-interface IUser extends Document{
-    id: string;
-    name: string;
-    email: string;
-    password: string;
-    phone: string;
-}
-
-export class UserRepositpry extends BaseRepository<IUser> {
+export class UserRepository extends BaseRepository<IUserDocument> {
     constructor() {
         super(UserModel);
+    }
+
+    async findByEmail(email: string): Promise<IUserDocument | null> {
+        return this.model.findOne({email});
     }
 }

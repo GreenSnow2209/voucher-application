@@ -1,8 +1,8 @@
 import express from "express";
-import AuthRoutes from "./auth.routes";
-import UsersRoute from "./users.route";
-import VouchersRoute from "./vouchers.route";
-import EventRoute from "./events.route";
+import AuthRoutes from "./auth.route";
+import UsersRoute from "./user.route";
+import VouchersRoute from "./voucher.route";
+import EventRoute from "./event.route";
 
 const routes = express.Router();
 

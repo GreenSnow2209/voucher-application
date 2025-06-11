@@ -13,6 +13,36 @@ This project helps reinforce concepts like database transaction integrity, retry
 
 ---
 
+## ⚙️ Environment Setup Guide
+
+### 1. Install Node.js
+
+Download and install Node.js from the official website:
+https://nodejs.org/
+
+### 2. MongoDB & Mongoose Setup
+
+Create a Database in MongoDB Atlas (Cloud)
+
+Install Mongoose in Project
+
+```npm install mongoose```
+
+### 3. ESLint
+
+Install ESLint 
+
+```bash 
+npm install eslint
+```
+
+```bash
+npx eslint --init
+```
+
+
+---
+
 ## 🚀 Getting Started
 
 ### 1. Clone the Repository

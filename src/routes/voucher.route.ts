@@ -1,5 +1,5 @@
 import express from "express";
-import { VoucherController } from '../controllers/vouchers.controller';
+import { VoucherController } from '../controllers/voucher.controller';
 import { authMiddleware } from "../middlewares/auth.middleware";
 
 const router = express.Router();

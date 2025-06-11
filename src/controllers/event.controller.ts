@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import {EventService} from '../services/events.services';
+import {EventService} from '../services/event.service';
 import {JwtPayload} from "jsonwebtoken";
 
 const eventService = new EventService();
