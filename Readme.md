@@ -80,7 +80,7 @@ npm install jsonwebtoken
 npm install --save-dev @types/jsonwebtoken
 ```
 
-### 6. Setup and config Swagger for RESTful APIs
+### 7. Setup and config Swagger for RESTful APIs
 
 Install Swagger packages
 
