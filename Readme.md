@@ -20,15 +20,21 @@ This project helps reinforce concepts like database transaction integrity, retry
 Download and install Node.js from the official website:
 https://nodejs.org/
 
-### 2. MongoDB & Mongoose Setup
+### 2. Setup repo
+
+Run ```npm init``` for create blank project
+
+### 3. MongoDB & Mongoose Setup
 
 Create a Database in MongoDB Atlas (Cloud)
+
+In ```.env``` file, paste Mongo Uri into ```MONGO_URI=``` to connect Atlas
 
 Install Mongoose in Project
 
 ```npm install mongoose```
 
-### 3. ESLint
+### 4. ESLint
 
 Install ESLint 
 
@@ -42,9 +48,48 @@ npx eslint --init
 
 ```bash
 npx eslint .
+````
+
+### 5. Setup and config CORS
+
+Install the CORS middleware
+
+```bash 
+npm install cors
 ```
 
+Add the following to your Express app (config/config.ts):
 
+```
+import cors from 'cors';
+
+app.use(cors()); // Enable CORS for all host/port
+
+//app.use(cors({ origin: 'http://localhost:3000' })); -> Customize allowed host/port
+```
+
+### 6. Setup and config Authentication
+
+Use JWT (JSON Web Token) for authentication
+
+```bash 
+npm install jsonwebtoken
+```
+
+```bash 
+npm install --save-dev @types/jsonwebtoken
+```
+
+### 6. Setup and config Swagger for RESTful APIs
+
+Install Swagger packages
+
+```bash 
+npm install swagger-ui-express swagger-jsdoc
+```
+```bash 
+npm install --save-dev @types/swagger-ui-express
+```
 
 ---
 
@@ -53,7 +98,7 @@ npx eslint .
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/voucher-app.git
+git clone git@github.com:GreenSnow2209/voucher-application.git
 cd voucher-app
 ```
 
@@ -66,16 +111,16 @@ npm install
 ### 3. Setup Environment Variables
 Create ```.env``` file in the root directory with the following content
 ```
+JWT_SECRET=
 PORT=
 MONGO_URI=
+DATABASE_NAME=
 ```
 
 ### 3. Start the Server
 Create ```.env``` file in the root directory with the following content
-```
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/voucher-app
-REDIS_URL=redis://localhost:6379
+```bash
+npm start
 ```
 
 
