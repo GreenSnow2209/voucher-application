@@ -13,7 +13,7 @@ export default class BaseRepository<T extends Document> implements ICrudReposito
     }
 
     async findById(id: string): Promise<T | null> {
-        return this.model.findById(id);
+        return this.model.findOne({ id: id });
     }
 
     async create(data: Partial<T>): Promise<T> {

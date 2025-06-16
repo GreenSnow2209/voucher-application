@@ -16,7 +16,7 @@ const config = {
   },
 
   // The migrations dir, can be an relative or absolute path. Only edit this when really necessary.
-  migrationsDir: "migrations",
+  migrationsDir: "src/migrations",
 
   // The mongodb collection where the applied changes are stored. Only edit this when really necessary.
   changelogCollectionName: "changelog",
@@ -27,7 +27,7 @@ const config = {
   // The value in seconds for the TTL index that will be used for the lock. Value of 0 will disable the feature.
   lockTtl: 0,
 
-  // The file extension to create migrations and search for in migration dir 
+  // The file extension to create migrations and search for in migration dir
   migrationFileExtension: ".js",
 
   // Enable the algorithm to create a checksum of the file contents and use that in the comparison to determine

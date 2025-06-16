@@ -42,3 +42,52 @@
  *       500:
  *         description: Internal server error
  */
+
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *               - name
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: newuser@example.com
+ *               password:
+ *                 type: string
+ *                 example: strongpassword123
+ *               name:
+ *                 type: string
+ *                 example: New User
+ *     responses:
+ *       201:
+ *         description: Registration successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *       401:
+ *         description: User already exists or invalid input
+ *       500:
+ *         description: Internal server error
+ */

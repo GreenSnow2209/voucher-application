@@ -4,6 +4,7 @@ import {IEvent} from "./interfaces/event.interface";
 export type IEventDocument = IEvent & Document;
 
 const EventSchema = new mongoose.Schema({
+    id: {type: String, required: true, unique: true},
     name: {type: String, required: true},
     maxQuantity: {type: Number, required: true},
     editingBy: { type: String, default: null },

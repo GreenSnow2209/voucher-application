@@ -4,40 +4,40 @@ import {JwtPayload} from "jsonwebtoken";
 
 const eventService = new EventService();
 
-export class EventController {
-    static async getAllEvent(req: Request, res: Response) {
+export const EventController = {
+    async getAllEvent(req: Request, res: Response): Promise<void> {
         const events = await eventService.findAll();
         res.json(events);
-    }
+    },
 
-    static async getEventById(req: Request, res: Response) {
+    async getEventById(req: Request, res: Response): Promise<void> {
         const event = await eventService.findOne(req.params.id);
         res.json(event);
-    }
+    },
 
-    static async createEvent(req: Request, res: Response) {
+    async createEvent(req: Request, res: Response): Promise<void> {
         const event = await eventService.create(req.body);
         res.status(201).json(event);
-    }
+    },
 
-    static async updateEvent(req: Request, res: Response) {
+    async updateEvent(req: Request, res: Response): Promise<void> {
         const event = await eventService.update(req.params.id, req.body);
         res.json(event);
-    }
+    },
 
-    static async removeEvent(req: Request, res: Response) {
+    async removeEvent(req: Request, res: Response): Promise<void> {
         await eventService.remove(req.params.id);
         res.status(204).send();
-    }
+    },
 
-    static async requestVoucher(req: Request, res: Response) {
+    async requestVoucher(req: Request, res: Response): Promise<void> {
         const eventId = req.params.id;
         const userId = (req.user as JwtPayload)?.id;
         const newVoucher = await eventService.requestVoucher(eventId, userId);
-        res.status(204).json(newVoucher);
-    }
+        res.status(200).json(newVoucher);
+    },
 
-    static async requestEdit(req: Request, res: Response) {
+    async requestEdit(req: Request, res: Response): Promise<void> {
         let code = 200;
         let mess = 'Edit permission granted';
         const eventId = req.params.id;
@@ -51,17 +51,17 @@ export class EventController {
             mess = 'Event is being edited by another user';
         }
         res.status(code).send(mess);
-    }
+    },
 
-    static async releaseEdit(req: Request, res: Response) {
+    async releaseEdit(req: Request, res: Response): Promise<void> {
         const eventId = req.params.id;
         const userId = (req.user as JwtPayload)?.id;
 
         await eventService.releaseEdit(eventId, userId);
         res.status(200).send('Released');
-    }
+    },
 
-    static async maintainEdit(req: Request, res: Response) {
+    async maintainEdit(req: Request, res: Response): Promise<void> {
         let code = 200;
         let mess = 'Edit session extended';
         const eventId = req.params.id;
@@ -72,5 +72,5 @@ export class EventController {
             mess = 'Edit session invalid';
         }
         res.status(code).send(mess);
-    }
+    },
 }

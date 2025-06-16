@@ -4,8 +4,8 @@ import {UserService} from "../services/user.service";
 
 const JWT_SECRET = process.env.JWT_SECRET || '123';
 
-export class AuthController {
-    static async login(req: Request, res: Response) {
+export const AuthController = {
+    async login(req: Request, res: Response): Promise<void> {
         const { email, password } = req.body;
         try {
             const userService = new UserService();
@@ -24,9 +24,9 @@ export class AuthController {
             console.error(err);
             res.status(500).json({ error: 'Internal server error' });
         }
-    }
+    },
 
-    static async register(req: Request, res: Response) {
+    async register(req: Request, res: Response): Promise<void> {
         const { email, password, name } = req.body;
         try {
             const userService = new UserService();

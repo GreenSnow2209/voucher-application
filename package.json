@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.2",
     "@types/node": "^22.15.27",
     "@types/swagger-jsdoc": "^6.0.4",
@@ -36,9 +37,10 @@
     "typescript-eslint": "^8.34.0"
   },
   "dependencies": {
-    "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.18",
     "@types/jsonwebtoken": "^9.0.9",
+    "bcrypt": "^6.0.0",
+    "bull": "^4.16.5",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "jsonwebtoken": "^9.0.2",

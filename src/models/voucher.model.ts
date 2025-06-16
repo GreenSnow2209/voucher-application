@@ -4,9 +4,10 @@ import {IVoucher} from "./interfaces/voucher.interface";
 export type IVoucherDocument = IVoucher & Document
 
 const VoucherSchema = new mongoose.Schema({
+    id: {type: String, required: true, unique: true},
     code: {type: String, required: true, unique: true},
     userId: {type: String, required: true},
-    eventId: {type: mongoose.Schema.Types.ObjectId, ref: 'Event', required: true},
+    eventId: {type: String, required: true},
     issuedAt: {type: Date, default: Date.now},
     usedAt: {type: Date, default: null},
     isUsed: {type: Boolean, default: false},

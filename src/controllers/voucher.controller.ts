@@ -3,29 +3,29 @@ import { VoucherService } from '../services/voucher.service'
 
 const voucherService = new VoucherService();
 
-export class VoucherController {
-  static async getAllVoucher(req: Request, res: Response) {
+export const VoucherController = {
+  async getAllVoucher(req: Request, res: Response): Promise<void> {
     const users = await voucherService.findAll();
     res.json(users);
-  }
+  },
 
-  static async getVoucherById(req: Request, res: Response) {
+  async getVoucherById(req: Request, res: Response): Promise<void> {
     const user = await voucherService.findOne(req.params.id);
     res.json(user);
-  }
+  },
 
-  static async createVoucher(req: Request, res: Response) {
+  async createVoucher(req: Request, res: Response): Promise<void> {
     await voucherService.create(req.body);
     res.status(201).json(voucherService);
-  }
+  },
 
-  static async updateVoucher(req: Request, res: Response) {
+  async updateVoucher(req: Request, res: Response): Promise<void> {
     const user = await voucherService.update(req.params.id, req.body);
     res.json(user);
-  }
+  },
 
-  static async removeVoucher(req: Request, res: Response) {
+  async removeVoucher(req: Request, res: Response): Promise<void> {
     await voucherService.remove(req.params.id);
     res.status(204).send();
-  }
+  },
 }

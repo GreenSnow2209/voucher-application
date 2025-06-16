@@ -4,7 +4,7 @@ import routes from "../routes";
 import swaggerUi from "swagger-ui-express";
 import {swaggerSpec} from "../docs/swagger";
 
-export const createApp = (): Express => {
+export const appConfig = (): Express => {
     const app = express();
     app.use(express.json());
     app.use(cors());
