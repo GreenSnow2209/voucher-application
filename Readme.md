@@ -22,23 +22,23 @@ https://nodejs.org/
 
 ### 2. Setup repo
 
-Run ```npm init``` for create blank project
+Run `npm init` for create blank project
 
 ### 3. MongoDB & Mongoose Setup
 
 Create a Database in MongoDB Atlas (Cloud)
 
-In ```.env``` file, paste Mongo Uri into ```MONGO_URI=``` to connect Atlas
+In `.env` file, paste Mongo Uri into `MONGO_URI=` to connect Atlas
 
 Install Mongoose in Project
 
-```npm install mongoose```
+`npm install mongoose`
 
 ### 4. ESLint
 
-Install ESLint 
+Install ESLint
 
-```bash 
+```bash
 npm install --save-dev eslint @eslint/js typescript typescript-eslint
 ```
 
@@ -48,13 +48,13 @@ npx eslint --init
 
 ```bash
 npx eslint .
-````
+```
 
 ### 5. Setup and config CORS
 
 Install the CORS middleware
 
-```bash 
+```bash
 npm install cors
 ```
 
@@ -72,11 +72,11 @@ app.use(cors()); // Enable CORS for all host/port
 
 Use JWT (JSON Web Token) for authentication
 
-```bash 
+```bash
 npm install jsonwebtoken
 ```
 
-```bash 
+```bash
 npm install --save-dev @types/jsonwebtoken
 ```
 
@@ -84,10 +84,11 @@ npm install --save-dev @types/jsonwebtoken
 
 Install Swagger packages
 
-```bash 
+```bash
 npm install swagger-ui-express swagger-jsdoc
 ```
-```bash 
+
+```bash
 npm install --save-dev @types/swagger-ui-express
 ```
 
@@ -109,7 +110,9 @@ npm install
 ```
 
 ### 3. Setup Environment Variables
-Create ```.env``` file in the root directory with the following content
+
+Create `.env` file in the root directory with the following content
+
 ```
 JWT_SECRET=
 PORT=
@@ -118,9 +121,9 @@ DATABASE_NAME=
 ```
 
 ### 3. Start the Server
-Create ```.env``` file in the root directory with the following content
+
+Create `.env` file in the root directory with the following content
+
 ```bash
 npm start
 ```
-
-

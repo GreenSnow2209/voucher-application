@@ -1,12 +1,12 @@
-import BaseRepository from "./base.repository";
-import {IVoucherDocument, VoucherModel} from "../models/voucher.model";
+import BaseRepository from './base.repository';
+import { IVoucherDocument, VoucherModel } from '../models/voucher.model';
 
 export class VoucherRepository extends BaseRepository<IVoucherDocument> {
-    constructor() {
-        super(VoucherModel);
-    }
+  constructor() {
+    super(VoucherModel);
+  }
 
-    async countByEventId(eventId: string): Promise<number> {
-        return this.model.countDocuments({ id: eventId });
-    }
+  async countByEventId(eventId: string): Promise<number> {
+    return this.model.countDocuments({ id: eventId });
+  }
 }

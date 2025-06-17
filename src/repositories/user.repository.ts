@@ -1,12 +1,12 @@
-import BaseRepository from "./base.repository";
-import {IUserDocument, UserModel} from "../models/user.model";
+import BaseRepository from './base.repository';
+import { IUserDocument, UserModel } from '../models/user.model';
 
 export class UserRepository extends BaseRepository<IUserDocument> {
-    constructor() {
-        super(UserModel);
-    }
+  constructor() {
+    super(UserModel);
+  }
 
-    async findByEmail(email: string): Promise<IUserDocument | null> {
-        return this.model.findOne({email});
-    }
+  async findByEmail(email: string): Promise<IUserDocument | null> {
+    return this.model.findOne({ email });
+  }
 }

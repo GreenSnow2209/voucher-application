@@ -1,12 +1,12 @@
-import {Document} from "mongoose";
+import { Document } from 'mongoose';
 
 export interface IVoucher extends Document {
-    id: string;
-    code: string;
-    userId: string;
-    eventId: string;
-    issuedAt: Date;
-    usedAt: Date;
-    isUsed: boolean;
-    expiredAt: Date;
+  id: string;
+  code: string;
+  userId: string;
+  eventId: string;
+  issuedAt: Date;
+  usedAt: Date;
+  isUsed: boolean;
+  expiredAt: Date;
 }

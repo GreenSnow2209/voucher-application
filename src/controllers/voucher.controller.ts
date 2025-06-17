@@ -1,31 +1,33 @@
-import { Request, Response } from "express";
-import { VoucherService } from '../services/voucher.service'
+import { Request, Response } from 'express';
+import { VoucherService } from '../services/voucher.service';
+import { JwtPayload } from 'jsonwebtoken';
+import { BaseController } from './base.controller';
 
-const voucherService = new VoucherService();
+export class VoucherController extends BaseController {
+  private static _instance: VoucherController;
+  private voucherService: VoucherService;
 
-export const VoucherController = {
-  async getAllVoucher(req: Request, res: Response): Promise<void> {
-    const users = await voucherService.findAll();
-    res.json(users);
-  },
+  constructor() {
+    super();
+    this.voucherService = new VoucherService();
+  }
 
-  async getVoucherById(req: Request, res: Response): Promise<void> {
-    const user = await voucherService.findOne(req.params.id);
-    res.json(user);
-  },
+  public static getInstance(): VoucherController {
+    if (!this._instance) {
+      this._instance = new VoucherController();
+    }
+    return this._instance;
+  }
 
-  async createVoucher(req: Request, res: Response): Promise<void> {
-    await voucherService.create(req.body);
-    res.status(201).json(voucherService);
-  },
-
-  async updateVoucher(req: Request, res: Response): Promise<void> {
-    const user = await voucherService.update(req.params.id, req.body);
-    res.json(user);
-  },
-
-  async removeVoucher(req: Request, res: Response): Promise<void> {
-    await voucherService.remove(req.params.id);
-    res.status(204).send();
-  },
+  public requestVoucher = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const eventId = req.params.id;
+      const userId = (req.user as JwtPayload)?.id;
+      const newVoucher = await this.voucherService.requestVoucher(eventId, userId);
+      res.status(200).json(newVoucher);
+    } catch (err) {
+      this.logger(err, 'error');
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
 }

@@ -5,7 +5,7 @@ module.exports = {
    * @returns {Promise<void>}
    */
   async up(db, client) {
-    await db.createCollection("users");
+    await db.createCollection('users');
   },
 
   /**
@@ -14,6 +14,6 @@ module.exports = {
    * @returns {Promise<void>}
    */
   async down(db, client) {
-    await db.collection("users").drop();
-  }
+    await db.collection('users').drop();
+  },
 };
