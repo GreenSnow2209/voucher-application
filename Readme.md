@@ -92,6 +92,28 @@ npm install swagger-ui-express swagger-jsdoc
 npm install --save-dev @types/swagger-ui-express
 ```
 
+### 8. Setup and config Migration
+
+Install ```migrate-mongo``` packages
+
+```bash
+npm install -g migrate-mongo
+```
+
+Init migration folder
+
+```bash
+npx migrate-mongo init
+```
+
+Setup config for migration at ```migrate-mongo-config.js```
+
+After setup config, create migration with cmd:
+
+```bash
+npx migrate-mongo create create-users-collection
+```
+
 ---
 
 ## 🚀 Getting Started
