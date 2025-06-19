@@ -5,6 +5,6 @@ dotenv.config();
 export const appConfig = {
   port: process.env.PORT || 3000,
   jwtSecret: process.env.JWT_SECRET || 'secret',
-  mongoURI: process.env.MONGODB_URI || 'mongodb://localhost',
+  mongoURI: process.env.MONGO_URI || 'mongodb://localhost',
   databaseName: process.env.DATABASE_NAME || 'local,',
 };

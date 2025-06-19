@@ -1,5 +1,6 @@
 import { Model, Document } from 'mongoose';
 import { ICrudRepository } from './interfaces/crud-repository.interface';
+import { logger } from '../utils/logger';
 
 export default class BaseRepository<T extends Document> implements ICrudRepository<T> {
   protected model: Model<T>;
@@ -9,11 +10,13 @@ export default class BaseRepository<T extends Document> implements ICrudReposito
   }
 
   async findAll(): Promise<T[]> {
-    return this.model.find();
+    return await this.model.find();
   }
 
   async findById(id: string): Promise<T | null> {
-    return this.model.findOne({ id: id });
+    const model = await this.model.findOne({ id });
+    logger(JSON.stringify(model), 'warn');
+    return model;
   }
 
   async create(data: Partial<T>): Promise<T> {
@@ -21,10 +24,10 @@ export default class BaseRepository<T extends Document> implements ICrudReposito
   }
 
   async update(id: string, data: Partial<T>): Promise<T | null> {
-    return this.model.findByIdAndUpdate(id, data);
+    return this.model.findOneAndUpdate({ id }, data);
   }
 
   async delete(id: string): Promise<T | null> {
-    return this.model.findByIdAndDelete(id);
+    return this.model.findOneAndDelete({ id });
   }
 }

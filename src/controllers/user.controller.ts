@@ -15,7 +15,6 @@ export class UserController extends BaseController {
       const users = await this.userService.findAll();
       res.json(users);
     } catch (err) {
-      this.logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -25,7 +24,6 @@ export class UserController extends BaseController {
       const user = await this.userService.findOne(req.params.id);
       res.json(user);
     } catch (err) {
-      this.logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -35,7 +33,6 @@ export class UserController extends BaseController {
       const user = await this.userService.create(req.body);
       res.status(201).json(user);
     } catch (err) {
-      this.logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -45,7 +42,6 @@ export class UserController extends BaseController {
       const user = await this.userService.update(req.params.id, req.body);
       res.json(user);
     } catch (err) {
-      this.logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -55,7 +51,6 @@ export class UserController extends BaseController {
       await this.userService.remove(req.params.id);
       res.status(204).send();
     } catch (err) {
-      this.logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
   }

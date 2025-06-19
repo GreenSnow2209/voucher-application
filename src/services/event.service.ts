@@ -6,7 +6,7 @@ const EDIT_TIMEOUT_MINUTES = 5;
 
 export class EventService extends BaseService<IEventDocument> {
   protected static instance: EventService;
-  private eventRepository: EventRepository;
+  protected eventRepository: EventRepository;
 
   public static getInstance(): EventService {
     if (!EventService.instance) {

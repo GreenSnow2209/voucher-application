@@ -22,7 +22,7 @@ export class AuthController extends BaseController {
         res.json({ token });
       }
     } catch (err) {
-      this.logger(err);
+        console.log(err);
       res.status(500).json({ error: 'Internal server error' });
     }
   }
@@ -37,7 +37,6 @@ export class AuthController extends BaseController {
         res.status(201).json({ user });
       }
     } catch (err) {
-      this.logger(err);
       res.status(500).json({ error: 'Internal server error' });
     }
   }

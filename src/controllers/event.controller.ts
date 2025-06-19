@@ -18,7 +18,7 @@ export class EventController extends BaseController {
       const events = await this.eventService.findAll();
       res.json(events);
     } catch (err) {
-      this.logger(err, 'error');
+      this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -28,7 +28,7 @@ export class EventController extends BaseController {
       const event = await eventService.findOne(req.params.id);
       res.json(event);
     } catch (err) {
-      this.logger(err, 'error');
+      this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -38,7 +38,7 @@ export class EventController extends BaseController {
       const event = await eventService.create(req.body);
       res.status(201).json(event);
     } catch (err) {
-      this.logger(err, 'error');
+      this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -48,7 +48,7 @@ export class EventController extends BaseController {
       const event = await eventService.update(req.params.id, req.body);
       res.json(event);
     } catch (err) {
-      this.logger(err, 'error');
+      this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -58,7 +58,7 @@ export class EventController extends BaseController {
       await eventService.remove(req.params.id);
       res.status(204).send();
     } catch (err) {
-      this.logger(err, 'error');
+      this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -79,7 +79,7 @@ export class EventController extends BaseController {
       }
       res.status(code).send(mess);
     } catch (err) {
-      this.logger(err, 'error');
+      this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -92,7 +92,7 @@ export class EventController extends BaseController {
       await eventService.releaseEdit(eventId, userId);
       res.status(200).send('Released');
     } catch (err) {
-      this.logger(err, 'error');
+      this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -110,7 +110,7 @@ export class EventController extends BaseController {
       }
       res.status(code).send(mess);
     } catch (err) {
-      this.logger(err, 'error');
+      this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
   }

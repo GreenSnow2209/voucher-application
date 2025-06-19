@@ -121,10 +121,10 @@
 
 /**
  * @swagger
- * /api/events/request/{id}:
+ * /api/vouchers/request/{id}:
  *   post:
  *     summary: Request a voucher for an event
- *     tags: [Events]
+ *     tags: [Vouchers]
  *     security:
  *       - bearerAuth: []
  *     parameters:
