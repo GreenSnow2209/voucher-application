@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
+import { appConfig } from '../config/app.config';
 
 export const connectDatabase = async (): Promise<void> => {
   try {
-    const mongoUri = process.env.MONGO_URI || '';
-    const databaseName = process.env.DATABASE_NAME || 'voucher_app';
+    const mongoUri = appConfig.mongoURI || '';
+    const databaseName = appConfig.databaseName || 'voucher_app';
     await mongoose.connect(mongoUri + '/' + databaseName);
     console.log('Connected to mongodb successfully!');
   } catch (error) {

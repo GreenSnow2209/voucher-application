@@ -4,19 +4,11 @@ import { JwtPayload } from 'jsonwebtoken';
 import { BaseController } from './base.controller';
 
 export class VoucherController extends BaseController {
-  private static _instance: VoucherController;
   private voucherService: VoucherService;
 
   constructor() {
     super();
-    this.voucherService = new VoucherService();
-  }
-
-  public static getInstance(): VoucherController {
-    if (!this._instance) {
-      this._instance = new VoucherController();
-    }
-    return this._instance;
+    this.voucherService = VoucherService.getInstance();
   }
 
   public requestVoucher = async (req: Request, res: Response): Promise<void> => {

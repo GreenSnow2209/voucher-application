@@ -1,13 +1,14 @@
 // In this file you can configure migrate-mongo
+const { appConfig } = require('./src/config/app.config');
 require('dotenv').config();
 
 const config = {
   mongodb: {
     // TODO Change (or review) the url to your MongoDB:
-    url: process.env.MONGODB_URI || 'mongodb://localhost:27017',
+    url: appConfig.mongoURI,
 
     // TODO Change this to your database name:
-    databaseName: process.env.DATABASE_NAME,
+    databaseName: appConfig.databaseName,
 
     options: {
       //   connectTimeoutMS: 3600000, // increase connection timeout to 1 hour

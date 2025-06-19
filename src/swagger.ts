@@ -1,4 +1,6 @@
+import { Express } from 'express';
 import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 export const swaggerOptions: swaggerJSDoc.Options = {
   definition: {
@@ -26,4 +28,6 @@ export const swaggerOptions: swaggerJSDoc.Options = {
   apis: ['./src/docs/*.ts'],
 };
 
-export const swaggerSpec = swaggerJSDoc(swaggerOptions);
+export function Swagger(app: Express): void {
+  app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(swaggerOptions)));
+}

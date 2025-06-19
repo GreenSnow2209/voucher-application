@@ -5,19 +5,11 @@ import { BaseController } from './base.controller';
 const userService = new UserService();
 
 export class UserController extends BaseController {
-  private static _instance: UserController;
   private userService: UserService;
 
   constructor() {
     super();
-    this.userService = new UserService();
-  }
-
-  public static getInstance(): UserController {
-    if (!this._instance) {
-      this._instance = new UserController();
-    }
-    return this._instance;
+    this.userService = UserService.getInstance();
   }
 
   async getAllUser(req: Request, res: Response): Promise<void> {

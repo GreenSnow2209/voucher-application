@@ -5,7 +5,15 @@ import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 
 export class UserService extends BaseService<IUserDocument> {
+  protected static instance: UserService;
   protected userRepository: UserRepository;
+
+  public static getInstance(): UserService {
+    if (!UserService.instance) {
+      UserService.instance = new UserService();
+    }
+    return UserService.instance;
+  }
 
   constructor() {
     const userRepo = new UserRepository();

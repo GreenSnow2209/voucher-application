@@ -5,8 +5,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { EventRepository } from '../repositories/event.repository';
 
 export class VoucherService extends BaseService<IVoucherDocument> {
+  protected static instance: VoucherService;
   private voucherRepository: VoucherRepository;
   private eventRepository: EventRepository;
+
+  public static getInstance(): VoucherService {
+    if (!VoucherService.instance) {
+      VoucherService.instance = new VoucherService();
+    }
+    return VoucherService.instance;
+  }
 
   constructor() {
     const voucherRepo = new VoucherRepository();

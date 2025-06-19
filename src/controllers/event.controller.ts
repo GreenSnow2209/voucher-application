@@ -6,19 +6,11 @@ import { BaseController } from './base.controller';
 const eventService = new EventService();
 
 export class EventController extends BaseController {
-  private static _instance: EventController;
   private eventService: EventService;
 
   constructor() {
     super();
-    this.eventService = new EventService();
-  }
-
-  public static getInstance(): EventController {
-    if (!this._instance) {
-      this._instance = new EventController();
-    }
-    return this._instance;
+    this.eventService = EventService.getInstance();
   }
 
   async getAllEvent(req: Request, res: Response): Promise<void> {

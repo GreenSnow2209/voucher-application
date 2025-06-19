@@ -1,14 +1,15 @@
-import express, { Express } from 'express';
+import express from 'express';
 import cors from 'cors';
 import routes from './routes';
-import swaggerUi from 'swagger-ui-express';
-import { swaggerSpec } from './docs/swagger';
+import { Swagger } from './swagger';
+import { connectDatabase } from './databse/db';
 
-export const appCreate = (): Express => {
-    const app = express();
-    app.use(express.json());
-    app.use(cors());
-    app.use('/api', routes);
-    app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-    return app;
-};
+const app = express();
+app.use(express.json());
+app.use(cors());
+app.use('/api', routes);
+
+connectDatabase();
+Swagger(app);
+
+export default app;
