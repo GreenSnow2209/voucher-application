@@ -2,8 +2,6 @@ import { Request, Response } from 'express';
 import { UserService } from '../services/user.service';
 import { BaseController } from './base.controller';
 
-const userService = new UserService();
-
 export class UserController extends BaseController {
   private userService: UserService;
 

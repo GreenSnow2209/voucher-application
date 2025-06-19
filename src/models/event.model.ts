@@ -6,8 +6,12 @@ export type IEventDocument = IEvent & Document;
 const EventSchema = new mongoose.Schema(
   {
     id: { type: String, required: true, unique: true },
-    name: { type: String, required: true },
-    maxQuantity: { type: Number, required: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    quantity: { type: Number, required: true },
+    status: { type: Boolean, required: true, default: true },
+    start: { type: Date, required: true },
+    end: { type: Date, required: true },
     editingBy: { type: String, default: null },
     editingExpiredAt: { type: Date, default: null },
   },

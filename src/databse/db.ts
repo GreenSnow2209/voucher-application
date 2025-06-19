@@ -1,14 +1,15 @@
 import mongoose from 'mongoose';
 import { appConfig } from '../config/app.config';
+import { logger } from '../utils/logger';
 
 export const connectDatabase = async (): Promise<void> => {
   try {
     const mongoUri = appConfig.mongoURI || '';
     const databaseName = appConfig.databaseName || 'voucher_app';
     await mongoose.connect(mongoUri + '/' + databaseName);
-    console.log('Connected to mongodb successfully!');
+    logger('Connected to mongodb successfully!', 'info');
   } catch (error) {
-    console.error(error);
+    logger(error, 'error');
     process.exit(1);
   }
 };

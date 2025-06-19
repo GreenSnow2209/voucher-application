@@ -23,7 +23,6 @@ export class EventService extends BaseService<IEventDocument> {
 
   async requestEdit(eventId: string, userId: string): Promise<{ allowed: boolean } | null> {
     const event = await this.eventRepository.findById(eventId);
-    console.log('user', userId);
     const now = new Date();
     if (!event) return null;
 

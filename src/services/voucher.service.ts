@@ -26,35 +26,37 @@ export class VoucherService extends BaseService<IVoucherDocument> {
   async requestVoucher(eventId: string, userId: string): Promise<IVoucherDocument | null> {
     try {
       const event = await this.eventRepository.findById(eventId);
-      if (!event) throw new Error('Event not found');
+      if (!event) {
+        this.logger(`Event ${eventId} not found`);
+        return null;
+      }
 
       const issuedCount = await this.voucherRepository.countByEventId(eventId);
-      if (issuedCount >= event.maxQuantity) {
+      if (issuedCount >= event.quantity) {
         const error: any = new Error('Max quantity reached');
         error.statusCode = 456;
-        throw error;
+        this.logger(error, 'error');
+        return null;
       }
 
       const id = uuidv4().toUpperCase();
       const code = uuidv4().toUpperCase();
-      const voucher = await this.voucherRepository.create({
-        id,
-        code,
-        eventId,
-        userId,
-        issuedAt: new Date(),
-      });
-      console.log('voucher', voucher);
-
       /*await emailQueue.add('sendEmail', {
                 to: 'user@gmail.com',
                 subject: 'Voucher Code Issue',
                 text: `Here is voucher code: ${code}`,
             });*/
 
-      return voucher;
+      return await this.voucherRepository.create({
+        id,
+        code,
+        eventId,
+        userId,
+        issuedAt: new Date(),
+      });
     } catch (err) {
-      throw err;
+      this.logger(err, 'error');
+      return null;
     }
   }
 }

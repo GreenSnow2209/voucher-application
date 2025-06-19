@@ -1,11 +1,14 @@
 import { ICrudRepository } from '../repositories/interfaces/crud-repository.interface';
 import { v4 as uuidv4 } from 'uuid';
+import { logger, LoggerFunction } from '../utils/logger';
 
 export default class BaseService<T> {
   protected repository: ICrudRepository<T>;
+  protected logger: LoggerFunction;
 
   constructor(repository: ICrudRepository<T>) {
     this.repository = repository;
+    this.logger = logger;
   }
 
   async findAll(): Promise<T[]> {
