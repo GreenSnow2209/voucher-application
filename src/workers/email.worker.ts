@@ -4,7 +4,7 @@ import sendEmailJob from '../jobs/bull/email.job';
 emailQueue.process('sendEmail', sendEmailJob);
 
 emailQueue.on('failed', (job, err) => {
-  console.error(`Email Job ${job.id} failed:`, err);
+  console.error(`Email Job ${job.id} fail:`, err);
 });
 
 emailQueue.on('completed', (job) => {

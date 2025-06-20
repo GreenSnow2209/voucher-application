@@ -20,6 +20,12 @@
  *         description: ID of the event to request voucher for
  *         schema:
  *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/VoucherInput'
  *     responses:
  *       200:
  *         description: Voucher issued successfully
@@ -39,6 +45,41 @@
  * @swagger
  * components:
  *   schemas:
+ *     VoucherInput:
+ *       type: object
+ *       required:
+ *         - title
+ *         - startDate
+ *         - value
+ *       properties:
+ *         title:
+ *           type: string
+ *           description: Title of the voucher
+ *         description:
+ *           type: string
+ *           description: Optional description of the voucher
+ *         startDate:
+ *           type: string
+ *           format: date-time
+ *           description: Voucher start date
+ *         expireDate:
+ *           type: string
+ *           format: date-time
+ *           description: Voucher expiration date
+ *         value:
+ *           type: number
+ *           description: Discount value
+ *         isPercentage:
+ *           type: boolean
+ *           description: Whether the value is a percentage
+ *       example:
+ *         title: "10% Off"
+ *         description: "Apply to all items"
+ *         startDate: "2025-06-18T00:00:00Z"
+ *         expireDate: "2025-07-01T00:00:00Z"
+ *         value: 10
+ *         isPercentage: true
+ *
  *     Voucher:
  *       type: object
  *       properties:
@@ -50,12 +91,12 @@
  *           type: string
  *         eventId:
  *           type: string
- *         status:
- *           type: boolean
  *         title:
  *           type: string
  *         description:
  *           type: string
+ *         status:
+ *           type: boolean
  *         startDate:
  *           type: string
  *           format: date-time

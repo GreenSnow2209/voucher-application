@@ -16,7 +16,35 @@ export class VoucherController extends BaseController {
       const eventId = req.params.id;
       const userId = (req.user as JwtPayload)?.id;
       const userEmail = (req.user as JwtPayload)?.email;
-      const newVoucher = await this.voucherService.requestVoucher(eventId, userId, userEmail);
+
+      const {
+        title,
+        description,
+        startDate,
+        expireDate,
+        value,
+        isPercentage,
+      } = req.body;
+
+      const newVoucher = await this.voucherService.requestVoucher(
+        eventId,
+        userId,
+        userEmail,
+        {
+          title,
+          description,
+          startDate,
+          expireDate,
+          value,
+          isPercentage,
+        }
+      );
+
+      if (!newVoucher) {
+        res.status(456).json({ message: 'Max quantity reached or failed to create voucher' });
+        return;
+      }
+
       res.status(200).json(newVoucher);
     } catch (err) {
       this._logger(err, 'error');
