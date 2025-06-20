@@ -25,7 +25,7 @@ export class VoucherService extends BaseService<IVoucherDocument> {
     this.eventRepository = new EventRepository();
   }
 
-  async requestVoucher(eventId: string, userId: string): Promise<IVoucherDocument | null> {
+  async requestVoucher(eventId: string, userId: string, userEmail: string): Promise<IVoucherDocument | null> {
     try {
       logger(eventId + ' - ' + userId);
       const event = await this.eventRepository.findById(eventId);
@@ -44,19 +44,26 @@ export class VoucherService extends BaseService<IVoucherDocument> {
 
       const id = uuidv4().toUpperCase();
       const code = uuidv4().toUpperCase();
-      await emailQueue.add('sendEmail', {
-        to: 'user@gmail.com',
-        subject: 'Voucher Code Issue',
-        text: `Here is voucher code: ${code}`,
-      });
-
-      return await this.voucherRepository.create({
+      const voucher = await this.voucherRepository.create({
         id,
         code,
         eventId,
         userId,
         issuedAt: new Date(),
+      })
+
+      if (!voucher) {
+        logger('Voucher not created', 'error');
+        return null;
+      }
+
+      await emailQueue.add('sendEmail', {
+        to: userEmail,
+        subject: 'Voucher Code Issue',
+        text: `Here is voucher code: ${code}`,
       });
+
+      return voucher;
     } catch (err) {
       this.logger(err, 'error');
       return null;

@@ -5,14 +5,14 @@ import { authMiddleware } from '../middlewares/auth.middleware';
 const router = express.Router();
 const eventController = new EventController();
 
-router.get('/', authMiddleware, eventController.getAllEvent.bind(eventController));
-router.get('/:id', authMiddleware, eventController.getEventById.bind(eventController));
-router.post('/', authMiddleware, eventController.createEvent.bind(eventController));
-router.put('/:id', authMiddleware, eventController.updateEvent.bind(eventController));
-router.delete('/:id', authMiddleware, eventController.removeEvent.bind(eventController));
+router.get('/', authMiddleware, eventController.getAllEvent);
+router.get('/:id', authMiddleware, eventController.getEventById);
+router.post('/', authMiddleware, eventController.createEvent);
+router.put('/:id', authMiddleware, eventController.updateEvent);
+router.delete('/:id', authMiddleware, eventController.removeEvent);
 
-router.post('/:id/editable/me', authMiddleware, eventController.requestEdit.bind(eventController));
-router.post('/:id/editable/release', authMiddleware, eventController.releaseEdit.bind(eventController));
-router.post('/:id/editable/maintain', authMiddleware, eventController.maintainEdit.bind(eventController));
+router.post('/:id/editable/me', authMiddleware, eventController.requestEdit);
+router.post('/:id/editable/release', authMiddleware, eventController.releaseEdit);
+router.post('/:id/editable/maintain', authMiddleware, eventController.maintainEdit);
 
 export default router;

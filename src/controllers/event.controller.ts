@@ -13,7 +13,7 @@ export class EventController extends BaseController {
     this.eventService = EventService.getInstance();
   }
 
-  async getAllEvent(req: Request, res: Response): Promise<void> {
+  getAllEvent = async (req: Request, res: Response): Promise<void> => {
     try {
       const events = await this.eventService.findAll();
       res.json(events);
@@ -21,9 +21,9 @@ export class EventController extends BaseController {
       this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
-  }
+  };
 
-  async getEventById(req: Request, res: Response): Promise<void> {
+  getEventById = async (req: Request, res: Response): Promise<void> => {
     try {
       const event = await eventService.findOne(req.params.id);
       res.json(event);
@@ -31,9 +31,9 @@ export class EventController extends BaseController {
       this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
-  }
+  };
 
-  async createEvent(req: Request, res: Response): Promise<void> {
+  createEvent = async (req: Request, res: Response): Promise<void> => {
     try {
       const event = await eventService.create(req.body);
       res.status(201).json(event);
@@ -41,9 +41,9 @@ export class EventController extends BaseController {
       this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
-  }
+  };
 
-  async updateEvent(req: Request, res: Response): Promise<void> {
+  updateEvent = async (req: Request, res: Response): Promise<void> => {
     try {
       const event = await eventService.update(req.params.id, req.body);
       res.json(event);
@@ -51,9 +51,9 @@ export class EventController extends BaseController {
       this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
-  }
+  };
 
-  async removeEvent(req: Request, res: Response): Promise<void> {
+  removeEvent = async (req: Request, res: Response): Promise<void> => {
     try {
       await eventService.remove(req.params.id);
       res.status(204).send();
@@ -61,9 +61,9 @@ export class EventController extends BaseController {
       this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
-  }
+  };
 
-  async requestEdit(req: Request, res: Response): Promise<void> {
+  requestEdit = async (req: Request, res: Response): Promise<void> => {
     try {
       let code = 200;
       let mess = 'Edit permission granted';
@@ -82,9 +82,9 @@ export class EventController extends BaseController {
       this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
-  }
+  };
 
-  async releaseEdit(req: Request, res: Response): Promise<void> {
+  releaseEdit = async (req: Request, res: Response): Promise<void> => {
     try {
       const eventId = req.params.id;
       const userId = (req.user as JwtPayload)?.id;
@@ -95,9 +95,9 @@ export class EventController extends BaseController {
       this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
-  }
+  };
 
-  async maintainEdit(req: Request, res: Response): Promise<void> {
+  maintainEdit = async (req: Request, res: Response): Promise<void> => {
     try {
       let code = 200;
       let mess = 'Edit session extended';
@@ -113,5 +113,5 @@ export class EventController extends BaseController {
       this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });
     }
-  }
+  };
 }

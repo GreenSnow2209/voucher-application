@@ -2,7 +2,79 @@
  * @swagger
  * tags:
  *   name: Events
- *   description: Event management and voucher issuing
+ *   description: Event management
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Event:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *         title:
+ *           type: string
+ *         description:
+ *           type: string
+ *         quantity:
+ *           type: integer
+ *         status:
+ *           type: boolean
+ *         start:
+ *           type: string
+ *           format: date-time
+ *         end:
+ *           type: string
+ *           format: date-time
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *       example:
+ *         id: "665e3a51922f7c84f5d9fcb0"
+ *         title: "Mid-Year Campaign"
+ *         description: "Big voucher drop"
+ *         quantity: 100
+ *         status: true
+ *         start: "2025-06-01T00:00:00Z"
+ *         end: "2025-06-30T23:59:59Z"
+ *         createdAt: "2025-06-01T10:00:00Z"
+ *         updatedAt: "2025-06-01T10:00:00Z"
+ *
+ *     EventInput:
+ *       type: object
+ *       required:
+ *         - title
+ *         - description
+ *         - quantity
+ *         - start
+ *         - end
+ *       properties:
+ *         title:
+ *           type: string
+ *         description:
+ *           type: string
+ *         quantity:
+ *           type: integer
+ *         status:
+ *           type: boolean
+ *         start:
+ *           type: string
+ *           format: date-time
+ *         end:
+ *           type: string
+ *           format: date-time
+ *       example:
+ *         title: "Mid-Year Campaign"
+ *         description: "Big voucher drop"
+ *         quantity: 100
+ *         status: true
+ *         start: "2025-06-01T00:00:00Z"
+ *         end: "2025-06-30T23:59:59Z"
  */
 
 /**
@@ -22,8 +94,6 @@
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Event'
- *       401:
- *         description: Unauthorized
  */
 
 /**
@@ -40,10 +110,9 @@
  *         required: true
  *         schema:
  *           type: string
- *         description: The event ID
  *     responses:
  *       200:
- *         description: Event details
+ *         description: Event found
  *         content:
  *           application/json:
  *             schema:
@@ -73,152 +142,114 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Event'
- *       400:
- *         description: Invalid input
  */
 
 /**
  * @swagger
- * components:
- *   schemas:
- *     Event:
- *       type: object
- *       properties:
- *         id:
- *           type: string
- *           description: Unique identifier for the event
- *         name:
- *           type: string
- *         maxQuantity:
- *           type: integer
- *         createdAt:
- *           type: string
- *           format: date-time
- *         updatedAt:
- *           type: string
- *           format: date-time
- *       example:
- *         id: "665e3a51922f7c84f5d9fcb0"
- *         name: "Summer Sale"
- *         maxQuantity: 100
- *         createdAt: "2025-06-01T10:00:00.000Z"
- *         updatedAt: "2025-06-01T10:00:00.000Z"
- *
- *     EventInput:
- *       type: object
- *       required:
- *         - name
- *         - maxQuantity
- *       properties:
- *         name:
- *           type: string
- *         maxQuantity:
- *           type: integer
- *       example:
- *         name: "Summer Sale"
- *         maxQuantity: 100
- */
-
-/**
- * @swagger
- * /api/vouchers/request/{id}:
- *   post:
- *     summary: Request a voucher for an event
- *     tags: [Vouchers]
+ * /api/events/{id}:
+ *   put:
+ *     summary: Update an event
+ *     tags: [Events]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
- *         description: Event ID to issue voucher from
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/EventInput'
+ *     responses:
+ *       200:
+ *         description: Event updated
+ *       404:
+ *         description: Event not found
+ */
+
+/**
+ * @swagger
+ * /api/events/{id}:
+ *   delete:
+ *     summary: Delete an event
+ *     tags: [Events]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
  *         schema:
  *           type: string
  *     responses:
- *       200:
- *         description: Voucher issued successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 code:
- *                   type: string
- *                 userId:
- *                   type: string
- *                 issuedAt:
- *                   type: string
- *                   format: date-time
+ *       204:
+ *         description: Deleted successfully
  *       404:
  *         description: Event not found
- *       456:
- *         description: Max quantity of vouchers reached
- *       500:
- *         description: Internal server error
  */
 
 /**
  * @swagger
  * /api/events/{id}/editable/me:
  *   post:
- *     summary: Request edit permission for an event
+ *     summary: Request edit permission
  *     tags: [Events]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
- *         description: Event ID
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Edit permission granted
+ *         description: Permission granted
  *       404:
  *         description: Event not found
  *       409:
- *         description: Event is currently being edited by another user
+ *         description: Already being edited
  */
 
 /**
  * @swagger
  * /api/events/{id}/editable/release:
  *   post:
- *     summary: Release edit permission for an event
+ *     summary: Release edit permission
  *     tags: [Events]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
- *         description: Event ID
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Edit permission released
+ *         description: Released
  */
 
 /**
  * @swagger
  * /api/events/{id}/editable/maintain:
  *   post:
- *     summary: Extend edit session timeout for an event
+ *     summary: Extend edit session
  *     tags: [Events]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: path
- *         name: id
+ *       - name: id
+ *         in: path
  *         required: true
- *         description: Event ID
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Edit session extended
+ *         description: Extended
  *       403:
- *         description: Edit session invalid or expired
+ *         description: Session expired
  */

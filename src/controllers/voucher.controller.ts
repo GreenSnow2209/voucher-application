@@ -11,11 +11,12 @@ export class VoucherController extends BaseController {
     this.voucherService = VoucherService.getInstance();
   }
 
-  public requestVoucher = async (req: Request, res: Response): Promise<void> => {
+  requestVoucher = async (req: Request, res: Response): Promise<void> => {
     try {
       const eventId = req.params.id;
       const userId = (req.user as JwtPayload)?.id;
-      const newVoucher = await this.voucherService.requestVoucher(eventId, userId);
+      const userEmail = (req.user as JwtPayload)?.email;
+      const newVoucher = await this.voucherService.requestVoucher(eventId, userId, userEmail);
       res.status(200).json(newVoucher);
     } catch (err) {
       this._logger(err, 'error');
