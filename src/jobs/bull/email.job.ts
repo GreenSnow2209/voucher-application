@@ -1,15 +1,15 @@
 import { Job } from 'bull';
 import nodemailer from 'nodemailer';
 import { logger } from '../../utils/logger';
-import { appConfig } from '../../config/app.config';
+import { mailConfig } from '../../config/mail.config';
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
+  host: mailConfig.smtpHost,
+  port: mailConfig.smtpPort,
   secure: false,
   auth: {
-    user: appConfig.smtpUser,
-    pass: appConfig.smtpPass,
+    user: mailConfig.smtpUser,
+    pass: mailConfig.smtpPass,
   },
 });
 
