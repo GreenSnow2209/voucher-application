@@ -24,7 +24,7 @@ export default class BaseRepository<T extends Document> implements ICrudReposito
   }
 
   async update(id: string, data: Partial<T>): Promise<T | null> {
-    return this.model.findOneAndUpdate({ id }, data);
+    return this.model.findOneAndUpdate({ id }, data, { new: true });
   }
 
   async delete(id: string): Promise<T | null> {
