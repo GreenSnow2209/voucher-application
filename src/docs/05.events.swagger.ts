@@ -147,32 +147,6 @@
 /**
  * @swagger
  * /api/events/{id}:
- *   put:
- *     summary: Update an event
- *     tags: [Events]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/EventInput'
- *     responses:
- *       200:
- *         description: Event updated
- *       404:
- *         description: Event not found
- */
-
-/**
- * @swagger
- * /api/events/{id}:
  *   delete:
  *     summary: Delete an event
  *     tags: [Events]

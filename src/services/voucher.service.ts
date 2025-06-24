@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { EventRepository } from '../repositories/event.repository';
 import { emailQueue } from '../queues/bullQueue';
 import { logger } from '../utils/logger';
+import mongoose from 'mongoose';
 
 export class VoucherService extends BaseService<IVoucherDocument> {
   protected static instance: VoucherService;
@@ -36,57 +37,87 @@ export class VoucherService extends BaseService<IVoucherDocument> {
       expireDate?: Date;
       value: number;
       isPercentage?: boolean;
+      quantity?: number;
     }
-  ): Promise<IVoucherDocument | null> {
+  ): Promise<IVoucherDocument[] | null> {
+    const session = await mongoose.startSession();
     try {
-      logger(`${eventId} - ${userId}`);
+      let insertedVouchers: IVoucherDocument[] = [];
 
-      const event = await this.eventRepository.findById(eventId);
-      if (!event) {
-        this.logger(`Event ${eventId} not found`);
-        return null;
-      }
+      await session.withTransaction(async () => {
+        const event = await this.eventRepository.findById(eventId);
+        if (!event) {
+          this.logger(`Event ${eventId} not found`);
+          return null;
+        }
 
-      const issuedCount = await this.voucherRepository.countByEventId(eventId);
-      if (issuedCount >= event.quantity) {
-        const error: any = new Error('Max quantity reached');
-        error.statusCode = 456;
-        this.logger(error, 'error');
-        return null;
-      }
+        const existCount = await this.voucherRepository.countByEventId(eventId);
+        if (existCount >= event.quantity) {
+          const error: any = new Error('Max quantity reahed');
+          error.statusCode = 456;
+          this.logger(error, 'error');
+          return null;
+        }
 
-      const id = uuidv4().toUpperCase();
-      const code = uuidv4().toUpperCase();
+        const now = new Date();
+        let currentCount = existCount;
+        const listVoucher: Partial<IVoucherDocument>[] = [];
 
-      const voucher = await this.voucherRepository.create({
-        id,
-        code,
-        eventId,
-        userId,
-        issuedAt: new Date(),
-        title: payload.title,
-        description: payload.description || '',
-        startDate: payload.startDate,
-        expireDate: payload.expireDate,
-        value: payload.value,
-        isPercentage: payload.isPercentage ?? false,
+        for (let i = 0; i < (payload.quantity ?? 1); i++) {
+          if (currentCount >= event.quantity) break;
+
+          listVoucher.push({
+            id: uuidv4().toUpperCase(),
+            code: uuidv4().toUpperCase(),
+            eventId,
+            userId,
+            issuedAt: now,
+            title: payload.title,
+            description: payload.description || '',
+            startDate: payload.startDate,
+            expireDate: payload.expireDate,
+            value: payload.value,
+            isPercentage: payload.isPercentage ?? false,
+          });
+
+          currentCount++;
+        }
+
+        insertedVouchers = await this.voucherRepository.insertMany(listVoucher, session);
+      }, {
+        readPreference: 'primary',
+        readConcern: { level: 'local' },
+        writeConcern: { w: 'majority' }
       });
 
-      if (!voucher) {
+      if (!insertedVouchers) {
         this.logger('Voucher not created', 'error');
         return null;
+      } else {
+        const codesList = insertedVouchers.map((v, i) => `${i + 1}. ${v.code}`).join('\n');
+        const emailText = `🎉 Congratulations!
+
+        You have received ${insertedVouchers.length} voucher${insertedVouchers.length > 1 ? 's' : ''} from our promotion:
+
+        ----------------------------
+        ${codesList}
+        ----------------------------
+
+        🛍️ Use these voucher code${insertedVouchers.length > 1 ? 's' : ''} at checkout to enjoy your discount.
+
+        Thank you for using our service!`;
+        await emailQueue.add('sendEmail', {
+          to: userEmail,
+          subject: `🎁 Your ${insertedVouchers.length} Voucher Code${insertedVouchers.length > 1 ? 's' : ''}`,
+          text: emailText,
+        });
       }
-
-      await emailQueue.add('sendEmail', {
-        to: userEmail,
-        subject: 'Your Voucher Code',
-        text: `Here is your voucher code: ${code}`,
-      });
-
-      return voucher;
+      return insertedVouchers;
     } catch (err) {
       this.logger(err, 'error');
       return null;
+    } finally {
+      await session.endSession();
     }
   }
 }

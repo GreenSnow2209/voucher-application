@@ -72,6 +72,9 @@
  *         isPercentage:
  *           type: boolean
  *           description: Whether the value is a percentage
+ *         quantity:
+ *           type: number
+ *           description: Whether the value is a percentage
  *       example:
  *         title: "10% Off"
  *         description: "Apply to all items"
@@ -79,6 +82,7 @@
  *         expireDate: "2025-07-01T00:00:00Z"
  *         value: 10
  *         isPercentage: true
+ *         quantity: 5
  *
  *     Voucher:
  *       type: object

@@ -1,6 +1,5 @@
-import { Model, Document } from 'mongoose';
+import { ClientSession, Document, Model } from 'mongoose';
 import { ICrudRepository } from './interfaces/crud-repository.interface';
-import { logger } from '../utils/logger';
 
 export default class BaseRepository<T extends Document> implements ICrudRepository<T> {
   protected model: Model<T>;
@@ -10,16 +9,16 @@ export default class BaseRepository<T extends Document> implements ICrudReposito
   }
 
   async findAll(): Promise<T[]> {
-    return await this.model.find();
+    return this.model.find();
   }
 
   async findById(id: string): Promise<T | null> {
-    const model = await this.model.findOne({ id });
-    return model;
+    return this.model.findOne({ id });
   }
 
-  async create(data: Partial<T>): Promise<T> {
-    return this.model.create(data);
+  async create(data: Partial<T>, session?: ClientSession): Promise<T> {
+    const [doc] = await this.model.create([data], { session });
+    return doc;
   }
 
   async update(id: string, data: Partial<T>): Promise<T | null> {

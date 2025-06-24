@@ -24,6 +24,7 @@ export class VoucherController extends BaseController {
         expireDate,
         value,
         isPercentage,
+        quantity = 1,
       } = req.body;
 
       const newVoucher = await this.voucherService.requestVoucher(
@@ -37,9 +38,9 @@ export class VoucherController extends BaseController {
           expireDate,
           value,
           isPercentage,
+          quantity
         }
       );
-
       if (!newVoucher) {
         res.status(456).json({ message: 'Max quantity reached or failed to create voucher' });
         return;
