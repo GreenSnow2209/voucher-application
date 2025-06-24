@@ -228,6 +228,11 @@
  *         required: true
  *         schema:
  *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/EventInput'
  *     responses:
  *       200:
  *         description: Released

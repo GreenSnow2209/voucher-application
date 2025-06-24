@@ -15,7 +15,6 @@ export default class BaseRepository<T extends Document> implements ICrudReposito
 
   async findById(id: string): Promise<T | null> {
     const model = await this.model.findOne({ id });
-    logger(JSON.stringify(model), 'warn');
     return model;
   }
 

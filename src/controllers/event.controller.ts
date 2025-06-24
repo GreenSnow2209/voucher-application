@@ -88,9 +88,8 @@ export class EventController extends BaseController {
     try {
       const eventId = req.params.id;
       const userId = (req.user as JwtPayload)?.id;
-
-      await eventService.releaseEdit(eventId, userId);
-      res.status(200).send('Released');
+      const event = await eventService.releaseEdit(eventId, userId, req.body);
+      res.status(200).send(event);
     } catch (err) {
       this._logger(err, 'error');
       res.status(500).json({ message: 'Internal server error' });

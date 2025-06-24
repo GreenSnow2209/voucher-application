@@ -1,6 +1,7 @@
 import { IEventDocument } from '../models/event.model';
 import BaseService from './base.service';
 import { EventRepository } from '../repositories/event.repository';
+import { logger } from '../utils/logger';
 
 const EDIT_TIMEOUT_MINUTES = 5;
 
@@ -42,19 +43,24 @@ export class EventService extends BaseService<IEventDocument> {
     return { allowed: true };
   }
 
-  async releaseEdit(eventId: string, userId: string): Promise<void> {
+  async releaseEdit(eventId: string, userId: string, data: Partial<IEventDocument>): Promise<IEventDocument | null> {
     const event = await this.eventRepository.findById(eventId);
     if (event && event.editingBy === userId) {
-      event.editingBy = '';
-      event.editingExpiredAt = null;
-      await this.eventRepository.update(eventId, event);
+      return await this.update(eventId, {
+        ...data,
+        editingBy: '',
+        editingExpiredAt: null,
+      });
     }
+    return null;
   }
 
   async maintainEdit(eventId: string, userId: string): Promise<boolean> {
     const event = await this.eventRepository.findById(eventId);
     const now = new Date();
-    if (!event || event.editingBy !== userId) return false;
+    if (!event || event.editingBy !== userId) {
+      return false;
+    }
 
     if (event.editingExpiredAt && event.editingExpiredAt > now) {
       event.editingExpiredAt = new Date(now.getTime() + EDIT_TIMEOUT_MINUTES * 60000);

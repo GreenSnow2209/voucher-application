@@ -2,7 +2,7 @@ import { agenda } from '../config/agenda.config';
 import { checkDBJob } from './check-db.job';
 import { logger } from '../utils/logger';
 
-export const setupJobs = async (): Promise<void> => {
+export const databaseConnectJob = async (): Promise<void> => {
   agenda.define('check db connection', checkDBJob);
 
   await agenda.start();

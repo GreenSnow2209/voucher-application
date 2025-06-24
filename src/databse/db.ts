@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 import { appConfig } from '../config/app.config';
 import { logger } from '../utils/logger';
-import { setupJobs } from '../jobs';
+import { databaseConnectJob } from '../jobs';
 
 export const connectDatabase = async (): Promise<void> => {
   try {
     const mongoUri = appConfig.mongoURI || '';
     const databaseName = appConfig.databaseName || 'voucher_app';
     await mongoose.connect(mongoUri + '/' + databaseName).then(async () => {
-      await setupJobs();
+      await databaseConnectJob();
     });
     logger('Connected to mongodb successfully! ' + mongoUri + '/' + databaseName, 'info');
   } catch (error) {

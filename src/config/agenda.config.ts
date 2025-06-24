@@ -4,6 +4,6 @@ import { appConfig } from './app.config';
 export const agenda = new Agenda({
   db: {
     address: appConfig.mongoURI,
-    collection: 'agenda',
+    collection: appConfig.databaseName,
   },
 });
