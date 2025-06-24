@@ -114,6 +114,18 @@ After setup config, create migration with cmd:
 npx migrate-mongo create create-users-collection
 ```
 
+Run migration:
+
+```bash
+npx migrate-mongo up
+```
+
+Rollback migration:
+
+```bash
+npx migrate-mongo down
+```
+
 ---
 
 ## 🚀 Getting Started

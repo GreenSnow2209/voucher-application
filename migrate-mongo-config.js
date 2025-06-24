@@ -1,14 +1,14 @@
 // In this file you can configure migrate-mongo
-const { appConfig } = require('./src/config/app.config');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('dotenv').config();
 
 const config = {
   mongodb: {
     // TODO Change (or review) the url to your MongoDB:
-    url: appConfig.mongoURI,
+    url: process.env.MONGO_URI,
 
     // TODO Change this to your database name:
-    databaseName: appConfig.databaseName,
+    databaseName: process.env.DATABASE_NAME,
 
     options: {
       //   connectTimeoutMS: 3600000, // increase connection timeout to 1 hour
