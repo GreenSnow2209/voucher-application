@@ -130,6 +130,10 @@ npx migrate-mongo down
 
 Install ```agenda``` packages
 
+```bash
+npm install agenda
+```
+
 ---
 
 ## 🚀 Getting Started

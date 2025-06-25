@@ -7,9 +7,8 @@ export const connectDatabase = async (): Promise<void> => {
   try {
     const mongoUri = appConfig.mongoURI || '';
     const databaseName = appConfig.databaseName || 'voucher_app';
-    await mongoose.connect(mongoUri + '/' + databaseName).then(async () => {
-      await databaseConnectJob();
-    });
+    await mongoose.connect(mongoUri + '/' + databaseName);
+    await databaseConnectJob();
     logger('Connected to mongodb successfully! ' + mongoUri + '/' + databaseName, 'info');
   } catch (error) {
     logger(error, 'error');

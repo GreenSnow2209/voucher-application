@@ -45,6 +45,7 @@ export class EventService extends BaseService<IEventDocument> {
 
   async releaseEdit(eventId: string, userId: string, data: Partial<IEventDocument>): Promise<IEventDocument | null> {
     const event = await this.eventRepository.findById(eventId);
+    //missing time
     if (event && event.editingBy === userId) {
       return await this.update(eventId, {
         ...data,
