@@ -126,6 +126,10 @@ Rollback migration:
 npx migrate-mongo down
 ```
 
+### 9. Setup and config Job Scheduler (Agenda)
+
+Install ```agenda``` packages
+
 ---
 
 ## 🚀 Getting Started
