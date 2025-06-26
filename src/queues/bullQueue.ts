@@ -1,9 +1,4 @@
-import Queue, { QueueOptions } from 'bull';
-import { redisConfig } from '../config/redis.config';
+import { Queue } from 'bullmq';
+import { getRedisClient } from '../utils/redis';
 
-export const emailQueue = new Queue('email', ({
-  redis: {
-    host: redisConfig.redisHost,
-    port: redisConfig.redisPort,
-  }
-} as QueueOptions));
+export const emailQueue = new Queue('email', { connection: getRedisClient() });
