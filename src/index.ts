@@ -1,8 +1,21 @@
-import { appConfig } from './config/app.config';
 import app from './app';
+import { appConfig } from './config/app.config';
+import { connectDatabase } from './databse/db';
+import { databaseConnectJob } from './jobs/agenda/check-db.job';
 
-const port = appConfig.port;
+const startServer = async (): Promise<void> => {
+  try {
+    await connectDatabase();
+    await databaseConnectJob();
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-})
+    const port = appConfig.port;
+    app.listen(port, () => {
+      console.log(`🚀 Server is running at http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error('❌ Failed to start application:', error);
+    process.exit(1);
+  }
+};
+
+startServer();

@@ -22,7 +22,9 @@ export const RES_MESSAGE = {
 export const AGENDA_JOBS = {
   CHECK_MONGO_CONNECTION: "check mongo connection",
   CHECK_MONGO_CONNECTION_TIME: "1 minute",
-  MAIL_SEND_TO_FAILED: "ryoji35997@gmail.com"
+  MAIL_SEND_TO_FAILED: "ryoji35997@gmail.com",
+  LOCK_LIMIT: 1,
+  LOCK_LIFETIME: 10000
 };
 
 export const EVENT_CONST = {
