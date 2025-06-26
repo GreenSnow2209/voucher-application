@@ -1,14 +1,16 @@
 import express from 'express';
 import { EventController } from '../controllers/event.controller';
 import { authMiddleware } from '../middlewares/auth.middleware';
+import { validateBody } from '../middlewares/validate.middleware';
+import { eventSchema } from '../validations/event.validation';
 
 const router = express.Router();
 const eventController = new EventController();
 
 router.get('/', authMiddleware, eventController.getAllEvent);
 router.get('/:id', authMiddleware, eventController.getEventById);
-router.post('/', authMiddleware, eventController.createEvent);
-router.put('/:id', authMiddleware, eventController.updateEvent);
+router.post('/', authMiddleware, validateBody(eventSchema), eventController.createEvent);
+router.put('/:id', authMiddleware, validateBody(eventSchema), eventController.updateEvent);
 router.delete('/:id', authMiddleware, eventController.removeEvent);
 
 router.post('/:id/editable/me', authMiddleware, eventController.requestEdit);

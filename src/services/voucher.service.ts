@@ -29,7 +29,6 @@ export class VoucherService extends BaseService<IVoucherDocument> {
   async requestVoucher(
     eventId: string,
     userId: string,
-    userEmail: string,
     payload: {
       title: string;
       description?: string;
@@ -93,24 +92,6 @@ export class VoucherService extends BaseService<IVoucherDocument> {
       if (!insertedVouchers) {
         this.logger('Voucher not created', 'error');
         return null;
-      } else {
-        const codesList = insertedVouchers.map((v, i) => `${i + 1}. ${v.code}`).join('\n');
-        const emailText = `🎉 Congratulations!
-
-        You have received ${insertedVouchers.length} voucher${insertedVouchers.length > 1 ? 's' : ''} from our promotion:
-
-        ----------------------------
-        ${codesList}
-        ----------------------------
-
-        🛍️ Use these voucher code${insertedVouchers.length > 1 ? 's' : ''} at checkout to enjoy your discount.
-
-        Thank you for using our service!`;
-        await emailQueue.add('sendEmail', {
-          to: userEmail,
-          subject: `🎁 Your ${insertedVouchers.length} Voucher Code${insertedVouchers.length > 1 ? 's' : ''}`,
-          text: emailText,
-        });
       }
       return insertedVouchers;
     } catch (err) {

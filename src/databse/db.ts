@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { appConfig } from '../config/app.config';
 import { logger } from '../utils/logger';
-import { databaseConnectJob } from '../jobs';
+import { databaseConnectJob } from '../jobs/agenda/check-db.job';
 
 export const connectDatabase = async (): Promise<void> => {
   try {

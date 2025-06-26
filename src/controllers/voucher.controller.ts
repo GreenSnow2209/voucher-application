@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { VoucherService } from '../services/voucher.service';
 import { JwtPayload } from 'jsonwebtoken';
 import { BaseController } from './base.controller';
+import { emailQueue } from '../queues/bullQueue';
+import { RES_MESSAGE, RES_STATUS } from '../utils/const';
 
 export class VoucherController extends BaseController {
   protected voucherService: VoucherService;
@@ -27,10 +29,9 @@ export class VoucherController extends BaseController {
         quantity = 1,
       } = req.body;
 
-      const newVoucher = await this.voucherService.requestVoucher(
+      const newVouchers = await this.voucherService.requestVoucher(
         eventId,
         userId,
-        userEmail,
         {
           title,
           description,
@@ -41,15 +42,27 @@ export class VoucherController extends BaseController {
           quantity
         }
       );
-      if (!newVoucher) {
+      if (!newVouchers) {
         res.status(456).json({ message: 'Max quantity reached or failed to create voucher' });
         return;
       }
 
-      res.status(200).json(newVoucher);
+      const codes = newVouchers.map(voucher => voucher.code);
+      await emailQueue.add('sendEmail', {
+        to: userEmail,
+        subject: `🎁 Your ${newVouchers.length} Voucher Code${newVouchers.length > 1 ? 's' : ''}`,
+        template: 'voucher',
+        context: {
+          quantity: codes.length,
+          plural: codes.length > 1 ? 's' : '',
+          codes,
+        },
+      });
+
+      res.status(200).json(newVouchers);
     } catch (err) {
       this._logger(err, 'error');
-      res.status(500).json({ message: 'Internal server error' });
+      res.status(RES_STATUS.SERVER_ERROR).send({ message: RES_MESSAGE.INTERNAL_ERROR });
     }
   };
 }

@@ -1,9 +1,7 @@
 import { IEventDocument } from '../models/event.model';
 import BaseService from './base.service';
 import { EventRepository } from '../repositories/event.repository';
-import { logger } from '../utils/logger';
-
-const EDIT_TIMEOUT_MINUTES = 5;
+import { EVENT_CONST } from '../utils/const';
 
 export class EventService extends BaseService<IEventDocument> {
   protected static instance: EventService;
@@ -22,6 +20,18 @@ export class EventService extends BaseService<IEventDocument> {
     this.eventRepository = eventRepo;
   }
 
+  async checkPermissionAndUpdate(eventId: string, userId: string, data: Partial<IEventDocument>): Promise<IEventDocument | null> {
+    const event = await this.eventRepository.findById(eventId);
+    if (!event) {
+      return null;
+    }
+    const now = new Date();
+    if (event.editingBy !== userId || !event.editingExpiredAt || event.editingExpiredAt < now) {
+      return null;
+    }
+    return this.eventRepository.update(eventId, data);
+  }
+
   async requestEdit(eventId: string, userId: string): Promise<{ allowed: boolean } | null> {
     const event = await this.eventRepository.findById(eventId);
     const now = new Date();
@@ -37,23 +47,22 @@ export class EventService extends BaseService<IEventDocument> {
     }
 
     event.editingBy = userId;
-    event.editingExpiredAt = new Date(now.getTime() + EDIT_TIMEOUT_MINUTES * 60000);
+    event.editingExpiredAt = new Date(now.getTime() + EVENT_CONST.EXPIRE_TIME);
     await this.eventRepository.update(eventId, event);
 
     return { allowed: true };
   }
 
-  async releaseEdit(eventId: string, userId: string, data: Partial<IEventDocument>): Promise<IEventDocument | null> {
+  async releaseEdit(eventId: string, userId: string): Promise<IEventDocument | null> {
     const event = await this.eventRepository.findById(eventId);
-    //missing time
-    if (event && event.editingBy === userId) {
-      return await this.update(eventId, {
-        ...data,
-        editingBy: '',
-        editingExpiredAt: null,
-      });
+    const now = new Date();
+    if (!event || event.editingBy !== userId || !event.editingExpiredAt  || event.editingExpiredAt < now) {
+      return null;
     }
-    return null;
+    return await this.update(eventId, {
+      editingBy: '',
+      editingExpiredAt: null,
+    });
   }
 
   async maintainEdit(eventId: string, userId: string): Promise<boolean> {
@@ -64,7 +73,7 @@ export class EventService extends BaseService<IEventDocument> {
     }
 
     if (event.editingExpiredAt && event.editingExpiredAt > now) {
-      event.editingExpiredAt = new Date(now.getTime() + EDIT_TIMEOUT_MINUTES * 60000);
+      event.editingExpiredAt = new Date(now.getTime() + EVENT_CONST.EXPIRE_TIME);
       await this.eventRepository.update(eventId, event);
       return true;
     }

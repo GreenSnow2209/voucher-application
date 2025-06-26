@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { UserService } from '../services/user.service';
 import { BaseController } from './base.controller';
 import { appConfig } from '../config/app.config';
+import { RES_MESSAGE, RES_STATUS } from '../utils/const';
 
 export class AuthController extends BaseController {
   protected userService: UserService;
@@ -17,7 +18,7 @@ export class AuthController extends BaseController {
     try {
       const user = await this.userService.validateLogin(email, password);
       if (!user) {
-        res.status(401).json({ error: 'Invalid email or password' });
+        res.status(RES_STATUS.UNAUTHORIZED).json({ error: 'Invalid email or password' });
       } else {
         const token = jwt.sign({ id: user.id, email: user.email }, appConfig.jwtSecret, {
           expiresIn: '1h',
@@ -26,7 +27,7 @@ export class AuthController extends BaseController {
       }
     } catch (err) {
       this._logger(err, 'error');
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(RES_STATUS.SERVER_ERROR).send({ message: RES_MESSAGE.INTERNAL_ERROR });
     }
   };
 
@@ -35,13 +36,13 @@ export class AuthController extends BaseController {
     try {
       const user = await this.userService.register(email, password, name);
       if (!user) {
-        res.status(401).json({ error: 'Invalid email or password' });
+        res.status(RES_STATUS.UNAUTHORIZED).json({ error: 'Invalid email or password' });
       } else {
         res.status(201).json({ user });
       }
     } catch (err) {
       this._logger(err, 'error');
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(RES_STATUS.SERVER_ERROR).send({ message: RES_MESSAGE.INTERNAL_ERROR });
     }
   }
 }
