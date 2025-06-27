@@ -3,7 +3,7 @@ import { databaseConnectJob } from './jobs/agenda/check-db.job';
 
 const startWorker = async (): Promise<void> => {
   try {
-    registerQueueProcessors();
+    await registerQueueProcessors();
     await databaseConnectJob();
     console.log('✅ Worker is running...');
   } catch (error) {

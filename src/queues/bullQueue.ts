@@ -1,4 +1,15 @@
-import { Queue } from 'bullmq';
+import { Queue, QueueOptions } from 'bullmq';
 import { getRedisClient } from '../utils/redis';
 
-export const emailQueue = new Queue('email', { connection: getRedisClient() });
+const queueOptions: QueueOptions = {
+  connection: getRedisClient(),
+  defaultJobOptions: {
+    removeOnComplete: 50,
+    removeOnFail: 50,
+  },
+}
+
+export const emailQueue = new Queue('email', {
+  ...queueOptions,
+  prefix: 'voucher_app:email'
+});
