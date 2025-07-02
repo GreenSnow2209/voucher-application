@@ -134,6 +134,27 @@ Install ```agenda``` packages
 npm install agenda
 ```
 
+### 10. Setup and config Unit Test
+
+Install packages
+
+```bash
+npm install --save-dev jest ts-jest @types/jest
+npm install --save-dev mongodb-memory-server
+```
+
+Init config ```ts-jest```
+
+```bash
+npx ts-jest config:init
+```
+
+Run Unit Test
+
+```bash
+npx jest
+```
+
 ---
 
 ## 🚀 Getting Started
