@@ -4,6 +4,7 @@ import { JwtPayload } from 'jsonwebtoken';
 import { BaseController } from './base.controller';
 import { emailQueue } from '../queues/bullQueue';
 import { RES_MESSAGE, RES_STATUS } from '../utils/const';
+import { sendMail } from '../utils/sendmail';
 
 export class VoucherController extends BaseController {
   protected voucherService: VoucherService;
@@ -48,9 +49,9 @@ export class VoucherController extends BaseController {
       }
 
       const codes = newVouchers.map(voucher => voucher.code);
-      await emailQueue.add('sendEmail', {
+      await sendMail({
         to: userEmail,
-        subject: `🎁 Your ${newVouchers.length} Voucher Code${newVouchers.length > 1 ? 's' : ''}`,
+        subject: `🎁 Your ${codes.length} Voucher Code${codes.length > 1 ? 's' : ''}`,
         template: 'voucher',
         context: {
           quantity: codes.length,
