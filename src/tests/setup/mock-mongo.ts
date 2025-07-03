@@ -1,17 +1,15 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { appConfig } from '../../config/app.config';
+import { testConfig } from '../../config/test.config';
 
 let mongoServer: MongoMemoryServer;
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
-  const mongoUri = appConfig.mongoURI || '';
-  const databaseName = appConfig.databaseName || 'voucher_app';
-  await mongoose.connect(mongoUri + '/' + databaseName);
   //const uri = mongoServer.getUri();
   //console.log('Mongo URI:', uri);
-  await mongoose.connect(mongoUri + '/' + databaseName);
+  //await mongoose.connect(uri);
+  await mongoose.connect(testConfig.mongoURI + '/' + testConfig.databaseName);
 }, 30_000);
 
 afterAll(async () => {

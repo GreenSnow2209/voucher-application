@@ -1,9 +1,8 @@
-import { Agenda } from 'agenda';
-import { appConfig } from './app.config';
+import dotenv from 'dotenv';
 
-export const agenda = new Agenda({
-  db: {
-    address: appConfig.mongoURI,
-    collection: appConfig.databaseName,
-  },
-});
+dotenv.config();
+
+export const agendaConfig = {
+  address: process.env.MONGO_URI || 'mongodb://localhost:27017',
+  collection: process.env.DATABASE_NAME || 'voucher_app',
+};

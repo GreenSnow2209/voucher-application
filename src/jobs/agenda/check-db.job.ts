@@ -1,8 +1,16 @@
-import { agenda } from '../../config/agenda.config';
+import { agendaConfig } from '../../config/agenda.config';
 import { logger } from '../../utils/logger';
 import { AGENDA_JOBS } from '../../utils/const';
 import mongoose from 'mongoose';
 import { sendMail } from '../../utils/sendmail';
+import { Agenda } from 'agenda';
+
+const agenda = new Agenda({
+  db: {
+    address: agendaConfig.address,
+    collection: agendaConfig.collection,
+  }
+})
 
 export const databaseConnectJob = async (): Promise<void> => {
   agenda.define(AGENDA_JOBS.CHECK_MONGO_CONNECTION, {}, async () => {
