@@ -1,7 +1,7 @@
 import Redis from 'ioredis';
 import { redisConfig } from '../config/redis.config';
 
-let client: Redis | null = null;
+let client: Redis | undefined;
 
 export const getRedisClient = (): Redis => {
   if (!client) {
