@@ -89,6 +89,10 @@ export class EventController extends BaseController {
       const eventId = req.params.id;
       const userId = (req.user as JwtPayload)?.id;
       const event = await eventService.releaseEdit(eventId, userId);
+      if (!event) {
+        res.status(RES_STATUS.CONFLICT).send({ message: RES_MESSAGE.EDIT_CONFLICT});
+        return;
+      }
       res.status(RES_STATUS.OK).send(event);
     } catch (err) {
       this._logger(err, 'error');

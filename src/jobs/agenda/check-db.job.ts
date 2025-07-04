@@ -12,6 +12,15 @@ const agenda = new Agenda({
   }
 })
 
+agenda.on('error', async (err) => {
+    console.error('[Agenda] Connection error:', err);
+    await sendMail({
+        to: AGENDA_JOBS.MAIL_SEND_TO_FAILED,
+        subject: '[Agenda Alert] Agenda Connection Error',
+        text: `Agenda connection error: ${(err as Error).message}`,
+    });
+});
+
 export const databaseConnectJob = async (): Promise<void> => {
   agenda.define(AGENDA_JOBS.CHECK_MONGO_CONNECTION, {}, async () => {
     /*const state = mongoose.connection.readyState;
@@ -26,7 +35,7 @@ export const databaseConnectJob = async (): Promise<void> => {
     try {
       const db = mongoose.connection.db;
       const admin = db?.admin();
-      await admin?.ping();
+      await admin?.ping({ maxTimeMS: 2000 });
       logger('[Agenda] MongoDB ping success ✅');
     } catch (error) {
       console.log(error);
