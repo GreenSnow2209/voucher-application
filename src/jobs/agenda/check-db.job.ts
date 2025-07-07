@@ -21,24 +21,19 @@ agenda.on('error', async (err) => {
     });
 });
 
-export const databaseConnectJob = async (): Promise<void> => {
+export const checkDatabaseHealth = async (): Promise<void> => {
   agenda.define(AGENDA_JOBS.CHECK_MONGO_CONNECTION, {}, async () => {
-    /*const state = mongoose.connection.readyState;
-    if (state === 0) {
-      logger('[Agenda] MongoDB state: DISCONNECTED 🚨');
-      await sendMail({
-        to: AGENDA_JOBS.MAIL_SEND_TO_FAILED,
-        subject: '[Agenda Alert] MongoDB Disconnected',
-        text: `⚠️ The MongoDB connection is currently down (state: ${state}). Please check the server.`,
-      });
-    }*/
     try {
-      const db = mongoose.connection.db;
-      const admin = db?.admin();
-      await admin?.ping({ maxTimeMS: 2000 });
-      logger('[Agenda] MongoDB ping success ✅');
+      const state = mongoose.connection.readyState;
+      if (state === 0) {
+        logger('[Agenda] MongoDB state: DISCONNECTED 🚨');
+        await sendMail({
+          to: AGENDA_JOBS.MAIL_SEND_TO_FAILED,
+          subject: '[Agenda Alert] MongoDB Disconnected',
+          text: `⚠️ The MongoDB connection is currently down (state: ${state}). Please check the server.`,
+        });
+      }
     } catch (error) {
-      console.log(error);
       logger('[Agenda] MongoDB ping failed 🚨', 'error');
       await sendMail({
         to: AGENDA_JOBS.MAIL_SEND_TO_FAILED,

@@ -1,10 +1,12 @@
 import app from './app';
 import { appConfig } from './config/app.config';
 import { connectDatabase } from './databse/db';
+import { checkDatabaseHealth } from './jobs/agenda/check-db.job';
 
 const startServer = async (): Promise<void> => {
   try {
     await connectDatabase();
+    await checkDatabaseHealth();
     const port = appConfig.port;
     app.listen(port, () => {
       console.log(`🚀 Server is running at http://localhost:${port}`);
