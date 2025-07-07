@@ -6,6 +6,7 @@ import { EventRepository } from '../repositories/event.repository';
 import { emailQueue } from '../queues/bullQueue';
 import { logger } from '../utils/logger';
 import mongoose from 'mongoose';
+import { IEventDocument } from '../models/event.model';
 
 export class VoucherService extends BaseService<IVoucherDocument> {
   protected static instance: VoucherService;
@@ -42,9 +43,10 @@ export class VoucherService extends BaseService<IVoucherDocument> {
     const session = await mongoose.startSession();
     try {
       let insertedVouchers: IVoucherDocument[] = [];
+      let event: IEventDocument | null = null;
 
       await session.withTransaction(async () => {
-        const event = await this.eventRepository.findById(eventId);
+        event = await this.eventRepository.findById(eventId);
         if (!event) {
           this.logger(`Event ${eventId} not found`);
           return null;
@@ -89,7 +91,7 @@ export class VoucherService extends BaseService<IVoucherDocument> {
         writeConcern: { w: 'majority' }
       });
 
-      if (!insertedVouchers) {
+      if (!insertedVouchers || !insertedVouchers.length || !event) {
         this.logger('Voucher not created', 'error');
         return null;
       }

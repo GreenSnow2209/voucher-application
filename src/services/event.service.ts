@@ -32,16 +32,13 @@ export class EventService extends BaseService<IEventDocument> {
     return this.eventRepository.update(eventId, data);
   }
 
-  async requestEdit(eventId: string, userId: string): Promise<{ allowed: boolean } | null> {
+  async requestEdit(eventId: string, userId: string): Promise<{ allowed: boolean }> {
     const event = await this.eventRepository.findById(eventId);
     const now = new Date();
-    if (!event) return null;
-
     if (
-      event.editingBy &&
-      event.editingBy !== userId &&
-      event.editingExpiredAt &&
-      event.editingExpiredAt > now
+      !event ||
+      (event.editingExpiredAt &&
+      event.editingExpiredAt < now)
     ) {
       return { allowed: false };
     }
@@ -56,7 +53,7 @@ export class EventService extends BaseService<IEventDocument> {
   async releaseEdit(eventId: string, userId: string): Promise<IEventDocument | null> {
     const event = await this.eventRepository.findById(eventId);
     const now = new Date();
-    if (!event || event.editingBy !== userId || !event.editingExpiredAt  || event.editingExpiredAt < now) {
+    if (!event || event.editingBy !== userId || (event.editingExpiredAt  && event.editingExpiredAt < now)) {
       return null;
     }
     return await this.update(eventId, {
@@ -68,16 +65,18 @@ export class EventService extends BaseService<IEventDocument> {
   async maintainEdit(eventId: string, userId: string): Promise<boolean> {
     const event = await this.eventRepository.findById(eventId);
     const now = new Date();
-    if (!event || event.editingBy !== userId) {
+
+    if (
+      !event ||
+      event.editingBy !== userId ||
+      !event.editingExpiredAt ||
+      event.editingExpiredAt <= now
+    ) {
       return false;
     }
 
-    if (event.editingExpiredAt && event.editingExpiredAt > now) {
-      event.editingExpiredAt = new Date(now.getTime() + EVENT_CONST.EXPIRE_TIME);
-      await this.eventRepository.update(eventId, event);
-      return true;
-    }
-
-    return false;
+    event.editingExpiredAt = new Date(now.getTime() + EVENT_CONST.EXPIRE_TIME);
+    await this.eventRepository.update(eventId, event);
+    return true;
   }
 }
