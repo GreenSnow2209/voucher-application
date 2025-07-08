@@ -23,7 +23,7 @@ const startServer = async (): Promise<void> => {
         process.exit(0);
       });
     };
-
+    // Write log -> close server -> exit process
     process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
     process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 

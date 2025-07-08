@@ -22,9 +22,6 @@ export class UserService extends BaseService<IUserDocument> {
   }
 
   async validateLogin(email: string, password: string): Promise<IUserDocument | null> {
-    if (!email || !password) {
-      return null;
-    }
     const user = await this.userRepository.findByEmail(email);
     if (!user) {
       return null;
@@ -37,9 +34,6 @@ export class UserService extends BaseService<IUserDocument> {
   }
 
   async register(email: string, password: string, name: string): Promise<IUserDocument | null> {
-    if (!email || !password || !name) {
-      return null;
-    }
     const userExists = await this.userRepository.findByEmail(email);
     if (userExists) {
       return null;
