@@ -18,7 +18,7 @@ export default tseslint.config(
   {
     rules: {
       'no-console': 'warn',
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/explicit-function-return-type': 'error',
       '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
     },

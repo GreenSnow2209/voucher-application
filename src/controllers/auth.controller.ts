@@ -18,16 +18,31 @@ export class AuthController extends BaseController {
     try {
       const user = await this.userService.validateLogin(email, password);
       if (!user) {
-        res.status(RES_STATUS.UNAUTHORIZED).json({ error: 'Invalid email or password' });
-      } else {
-        const token = jwt.sign({ id: user.id, email: user.email }, appConfig.jwtSecret, {
-          expiresIn: '1h',
+        res.status(RES_STATUS.UNAUTHORIZED).json({ 
+          error: 'Invalid email or password' 
         });
-        res.json({ token });
+        return;
       }
+
+      const token = jwt.sign(
+        { id: user.id, email: user.email }, 
+        appConfig.jwtSecret, 
+        { expiresIn: '1h' }
+      );
+      
+      res.status(RES_STATUS.OK).json({ 
+        token,
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name
+        }
+      });
     } catch (err) {
       this._logger(err, 'error');
-      res.status(RES_STATUS.SERVER_ERROR).send({ message: RES_MESSAGE.INTERNAL_ERROR });
+      res.status(RES_STATUS.SERVER_ERROR).json({ 
+        message: RES_MESSAGE.INTERNAL_ERROR 
+      });
     }
   };
 
@@ -36,13 +51,24 @@ export class AuthController extends BaseController {
     try {
       const user = await this.userService.register(email, password, name);
       if (!user) {
-        res.status(RES_STATUS.UNAUTHORIZED).json({ error: 'Invalid email or password' });
-      } else {
-        res.status(201).json({ user });
+        res.status(RES_STATUS.CONFLICT).json({ 
+          error: 'User with this email already exists' 
+        });
+        return;
       }
+
+      res.status(RES_STATUS.CREATED).json({ 
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name
+        }
+      });
     } catch (err) {
       this._logger(err, 'error');
-      res.status(RES_STATUS.SERVER_ERROR).send({ message: RES_MESSAGE.INTERNAL_ERROR });
+      res.status(RES_STATUS.SERVER_ERROR).json({ 
+        message: RES_MESSAGE.INTERNAL_ERROR 
+      });
     }
   }
 }
